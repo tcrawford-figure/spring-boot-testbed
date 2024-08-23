@@ -1,0 +1,38 @@
+### Create user
+
+POST http://localhost:8080/api/v1/users
+Content-Type: application/json
+Accept: application/json
+
+{
+  "name": "{{$random.alphabetic(10)}}",
+  "age": {{$random.integer(18, 60)}}
+}
+
+> {%
+  client.global.set("id", response.body.id);
+%}
+
+
+### Get user
+
+GET http://localhost:8080/api/v1/users/{{id}}
+Accept: application/json
+
+
+### Update user
+
+PUT http://localhost:8080/api/v1/users/{{id}}
+Content-Type: application/json
+
+{
+  "name": "{{ $random.alphabetic(10) }}",
+  "age": {{ $random.integer(18, 60) }}
+}
+
+
+### Delete user
+
+GET http://localhost:8080/api/v1/users/{{id}}
+Accept: application/json
+

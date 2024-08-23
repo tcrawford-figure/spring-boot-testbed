@@ -1,0 +1,69 @@
+spring:
+  application:
+    name: spring-boot-testbed
+
+  datasource:
+    driver-class-name: org.postgresql.Driver
+
+    hikari:
+      maximum-pool-size: 16
+      transaction-isolation: TRANSACTION_READ_COMMITTED
+      read-only: false
+      leak-detection-threshold: 120000
+
+  exposed:
+    show-sql: true
+
+
+logging:
+  level:
+    com.zaxxer.hikari: DEBUG
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+
+  endpoint:
+    health:
+      probes:
+        enabled: true
+      enabled: true
+      show-details: always
+      show-components: always
+      group:
+        liveness:
+          include: "livenessState, readinessState, ping"
+        readiness:
+          include: "*"
+
+  health:
+    defaults:
+      enabled: true
+    livenessstate:
+      enabled: true
+    readinessstate:
+      enabled: true
+
+  datadog:
+    metrics:
+      export:
+        enabled: false
+        api-key: ${DATADOG_API_KEY}
+        application-key: ${DATADOG_APP_KEY}
+
+  metrics:
+    tags:
+      application: ${spring.application.name}
+      env: ${spring.profiles.active}
+
+    distribution:
+      percentiles:
+        http:
+          server:
+            requests: 0.5, 0.95, 0.99
+      percentiles-histogram:
+        http:
+          server:
+            requests: true
